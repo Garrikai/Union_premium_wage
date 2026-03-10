@@ -1,5 +1,8 @@
 # Union_wage
 Labour economics project
+## Title
+The union premium wage: Findings in the United States of America labour
+market
 
 ## Abstract
 This study seeks to present empirical evidence of the union wage gap between workers who are either union
