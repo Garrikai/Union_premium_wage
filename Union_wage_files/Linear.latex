@@ -1,0 +1,81 @@
+
+% Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Wed, Nov 03, 2021 - 15:38:25
+% Requires LaTeX packages: dcolumn 
+\begin{table}[!htbp] \centering 
+  \caption{Union-Nonunion Wage Gap: Multiple Linear Regression} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{Log Wages} \\ 
+ & \multicolumn{1}{c}{Unconditional Wage gap} & \multicolumn{1}{c}{Conditional on Human Capital Control} & \multicolumn{1}{c}{Conditional on Job Controls} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)}\\ 
+\hline \\[-1.8ex] 
+ unionst1 & 0.337^{***} & 0.214^{***} & 0.196^{***} \\ 
+  & (0.014) & (0.012) & (0.012) \\ 
+  school &  & 0.097^{***} & 0.064^{***} \\ 
+  &  & (0.001) & (0.001) \\ 
+  exp &  & 0.040^{***} & 0.031^{***} \\ 
+  &  & (0.001) & (0.001) \\ 
+  exp2 &  & -0.001^{***} & -0.0005^{***} \\ 
+  &  & (0.00002) & (0.00001) \\ 
+  female &  & -0.308^{***} & -0.254^{***} \\ 
+  &  & (0.005) & (0.005) \\ 
+  race\_Black &  & -0.086^{***} & -0.049^{***} \\ 
+  &  & (0.009) & (0.008) \\ 
+  race\_AIE &  & -0.160^{***} & -0.135^{***} \\ 
+  &  & (0.026) & (0.024) \\ 
+  race\_Asian &  & 0.031^{**} & 0.057^{***} \\ 
+  &  & (0.015) & (0.014) \\ 
+  race\_Other &  & -0.0003 & 0.016 \\ 
+  &  & (0.043) & (0.040) \\ 
+  wc\_2 &  &  & -1.007^{***} \\ 
+  &  &  & (0.026) \\ 
+  wc\_3 &  &  & 0.030^{***} \\ 
+  &  &  & (0.009) \\ 
+  wc\_4 &  &  & -0.246^{***} \\ 
+  &  &  & (0.009) \\ 
+  wc\_5 &  &  & -0.150^{***} \\ 
+  &  &  & (0.012) \\ 
+  wc\_6 &  &  & -0.180^{***} \\ 
+  &  &  & (0.010) \\ 
+  wc\_7 &  &  & -0.378^{***} \\ 
+  &  &  & (0.010) \\ 
+  wc\_8 &  &  & -0.450^{***} \\ 
+  &  &  & (0.009) \\ 
+  wc\_9 &  &  & -0.849^{***} \\ 
+  &  &  & (0.026) \\ 
+  wc\_10 &  &  & -0.450^{***} \\ 
+  &  &  & (0.013) \\ 
+  ind\_2 &  &  & 0.057^{***} \\ 
+  &  &  & (0.013) \\ 
+  ind\_3 &  &  & 0.160^{***} \\ 
+  &  &  & (0.011) \\ 
+  ind\_4 &  &  & 0.171^{***} \\ 
+  &  &  & (0.011) \\ 
+  ind\_5 &  &  & -0.113^{***} \\ 
+  &  &  & (0.011) \\ 
+  ind\_6 &  &  & -0.262^{***} \\ 
+  &  &  & (0.009) \\ 
+  ind\_7 &  &  & -0.091^{***} \\ 
+  &  &  & (0.009) \\ 
+  ind\_8 &  &  & -0.084^{***} \\ 
+  &  &  & (0.009) \\ 
+  ind\_9 &  &  & 0.051^{***} \\ 
+  &  &  & (0.012) \\ 
+  Constant & 2.151^{***} & 0.613^{***} & 1.385^{***} \\ 
+  & (0.003) & (0.014) & (0.020) \\ 
+ \hline \\[-1.8ex] 
+Observations & \multicolumn{1}{c}{72,539} & \multicolumn{1}{c}{72,539} & \multicolumn{1}{c}{72,539} \\ 
+R$^{2}$ & \multicolumn{1}{c}{0.008} & \multicolumn{1}{c}{0.235} & \multicolumn{1}{c}{0.312} \\ 
+Adjusted R$^{2}$ & \multicolumn{1}{c}{0.008} & \multicolumn{1}{c}{0.235} & \multicolumn{1}{c}{0.312} \\ 
+Residual Std. Error & \multicolumn{1}{c}{0.744 (df = 72537)} & \multicolumn{1}{c}{0.653 (df = 72529)} & \multicolumn{1}{c}{0.619 (df = 72512)} \\ 
+F Statistic & \multicolumn{1}{c}{563.264$^{***}$ (df = 1; 72537)} & \multicolumn{1}{c}{2,471.776$^{***}$ (df = 9; 72529)} & \multicolumn{1}{c}{1,265.412$^{***}$ (df = 26; 72512)} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 

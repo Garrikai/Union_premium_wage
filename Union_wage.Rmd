@@ -1,0 +1,493 @@
+---
+# IMPORTANT: Change settings here, but DO NOT change the spacing.
+# Remove comments and add values where applicable.
+# The descriptions below should be self-explanatory
+
+title: "The union premium wage: Findings in the United states of America labour market"
+#subtitle: "This will appear as Right Header"
+
+documentclass: "elsarticle"
+
+# --------- Thesis title (Optional - set to FALSE by default).
+# You can move the details below around as you please.
+Thesis_FP: FALSE
+# Entry1: "An unbelievable study with a title spanning multiple lines."
+# Entry2: "\\textbf{Nico Katzke}" # textbf for bold
+# Entry3: "A thesis submitted toward the degree of Doctor of Philosophy"
+# Uni_Logo: Tex/Logo.png # Place a  png logo in an img folder in your root and uncomment this. Leave uncommented for no image
+# Logo_width: 0.3 # If using a logo - use this to set width (size) of image
+# Entry4: "Under the supervision of: \\vfill Prof. Joe Smith and Dr. Frank Smith"
+Entry5: "Stellenbosch University"
+Entry6: October 2021
+# Entry7:
+# Entry8:
+
+# --------- Front Page
+# Comment: ----- Follow this pattern for up to 5 authors
+AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
+Author1: "Garikai Zvinavashe 23338784"  # First Author - note the thanks message displayed as an italic footnote of first page.
+# Ref1: "Prescient Securities, Cape Town, South Africa" # First Author's Affiliation
+Email1: "23338784\\@sun.ac.za" # First Author's Email address
+
+# Author2: "John Smith"
+# Ref2: "Some other Institution, Cape Town, South Africa"
+# Email2: "John\\@gmail.com"
+# CommonAffiliation_12: TRUE # If Author 1 and 2 have a common affiliation. Works with _13, _23, etc.
+
+# Author3: "John Doe"
+# Email3: "Joe\\@gmail.com"
+
+CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
+
+keywords: "Union wage\\sep premium \\sep membership" # Use \\sep to separate
+JELCodes: "871 (Labour Economics)"
+
+# ----- Manage headers and footers:
+#BottomLFooter: $Title$
+#BottomCFooter:
+#TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
+BottomRFooter: "\\footnotesize Page \\thepage" # Add a '#' before this line to remove footer.
+addtoprule: TRUE
+addfootrule: TRUE               # Use if footers added. Add '#' to remove line.
+
+# --------- page margins:
+margin: 2.3 # Sides
+bottom: 2 # bottom
+top: 2.5 # Top
+HardSet_layout: TRUE # Hard-set the spacing of words in your document. This will stop LaTeX squashing text to fit on pages, e.g.
+# This is done by hard-setting the spacing dimensions. Set to FALSE if you want LaTeX to optimize this for your paper.
+
+# --------- Line numbers
+linenumbers: FALSE # Used when submitting to journal
+
+# ---------- References settings:
+# You can download cls format here: https://www.zotero.org/ - simply search for your institution. You can also edit and save cls formats here: https://editor.citationstyles.org/about/
+# Hit download, store it in Tex/ folder, and change reference below - easy.
+bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
+csl: Tex/harvard-stellenbosch-university.csl # referencing format used.
+# By default, the bibliography only displays the cited references. If you want to change this, you can comment out one of the following:
+#nocite: '@*' # Add all items in bibliography, whether cited or not
+# nocite: |  # add specific references that aren't cited
+#  @grinold2000
+#  @Someoneelse2010
+
+# ---------- General:
+RemovePreprintSubmittedTo: TRUE  # Removes the 'preprint submitted to...' at bottom of titlepage
+# Journal: "Journal of Finance"   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
+toc: FALSE                       # Add a table of contents
+numbersections: TRUE             # Should sections (and thus figures and tables) be numbered?
+fontsize: 11pt                  # Set fontsize
+linestretch: 1.2                # Set distance between lines.
+link-citations: TRUE            # This creates dynamic links to the papers in reference list.
+
+### Adding additional latex packages:
+# header-includes:
+#    - \usepackage{colortbl} # Add additional packages here.
+
+output:
+  pdf_document:
+    keep_tex: TRUE
+    template: Tex/TexDefault.txt
+    fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
+    fig_height: 3.5
+abstract: |
+  This study seeks to present empirical evidence of the union wage gap between workers who are either union members or non-members, in the USA labour market. The paper uses cross-sectional data from the Current Population Survey. We estimate numerous regression specifications, including and varying the control variables on individual household data. Our findings show that there is a significant union wage effect in the sample included at approximately 17% and the causal effect between union membership and returns to schooling results in a reduction in wage inequality. The significance of this study is to provide policy-makers with information on the importance of union wage effects, especially in developing countries.
+---
+
+<!-- First: Set your default preferences for chunk options: -->
+
+<!-- If you want a chunk's code to be printed, set echo = TRUE. message = FALSE stops R printing ugly package loading details in your final paper too. I also suggest setting warning = FALSE and checking for warnings in R, else you might find ugly warnings in your paper. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H')
+# Note: Include = FALSE implies the code is executed, but not printed in your pdf.
+# warning and message = FALSE implies ugly messages and warnings are removed from your pdf.
+# These should be picked up when you execute the command chunks (code sections below) in your rmd, not printed in your paper!
+
+# Lets load in example data, and see how this can be stored and later called from your 'data' folder.
+if(!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+Example_data <- Texevier::Ex_Dat
+
+# Notice that as you are working in a .Rproj file (I am assuming you are) - the relative paths of your directories start at your specified root.
+# This means that when working in a .Rproj file, you never need to use getwd() - it is assumed as your base root automatically.
+write_rds(Example_data, path = "data/Example_data.rds")
+
+```
+
+
+<!-- ############################## -->
+<!-- # Start Writing here: -->
+<!-- ############################## -->
+
+# Introduction \label{Introduction}
+
+The majority of the literature on unions and collective bargaining are centred around the evidence of unions in the United States of America. The primary focus of these studies is the effect of such unions on wages and some cases income inequalities. The empirical results of the wage differential vary, ranging from @mincer1983 at 0.01 percent to the study by @farber2001 at 0.26 percent. @lewis1983, suggested the union wage differential of 15 percent and it is the most cited reference point in the US context. Coincidentally the studies have shortcomings as the notion is that workers with a union membership status may be due to their own decision. However, the union wage premium between the workforce may be in part due to differences in worker characteristics and not their union membership status.
+
+The growing literature on the effects of union status on wage dispersion and income distribution was the backbone of this paper. Principle driver papers include a range of studies highlighting the effects of union membership on wage inequalities, specifically the socio-economic consequences. The union wage gap puzzle becomes salient as the rate of unionization has been declining in the US but there has also been a significant increase in income inequality as well. Therefore, the relevance of this study is to try to uncover the role that the union wage premium plays in increasing wage dispersion and consequently the high levels of wage inequality.
+
+This paper is framed as follows. The next section will introduce a brief literature review of the studies of union wage gaps in the context of the United States. Following that, we discuss the methodology used in the literature concerning the wage gap, including the main point, the data sources, the estimation approaches used in the paper and, finally, the drawbacks of the estimation procedures. After that, the paper then answers the relevant empirical research question, using the selected estimation procedure and, includes some diagnostic checks for robustness. Finally, the paper concludes by presenting stylized facts which could be credible for further research and policy implementation.
+
+
+
+# Brief Literature Review 
+
+Older empirical research suggested the use of industry level of data aggregation when estimating the union wage premium. Results for these earlier studies were deemed to be harder to interpret as it was challenging to distinguish heterogeneity effects at the industry level between the union and non-union industries. However, recent work has implemented the individual level of data aggregation to capture the observed and unobserved heterogeneity effects of union status on individual wages.
+
+Studies post the 1970s used the aggregate individual data and estimated two separate equations, one for the unionized group and the other for the non-unionized group. Both equations included control variables and wages as the dependent variable to be able to capture the effects of individual attributes. The estimation procedure used for these equations was the OLS for each individual. In the US, @hirsch2004, uses CPS data to posit that the effects of union status on wages are likely to be higher at 14 percent, whilst controlling for observable individual attributes. Cross country estimations of the union wage gap between the US, Uk and Germany, show that it was twice as higher in the US than in the Uk and two percentage points lower in Germany relative to the UK between 1985-1987 [@blanchflower2003].  
+
+\newpage
+
+# Methodological Aspects
+## Focus
+There is an ongoing debate on the methodological issues around the union wage effect. The main argument is centred around the estimation procedure to implement, the next issue is the treatment of the measurement error, the specific predictor to be used and finally the level of data aggregation. Estimation procedures have ranged widely in the studies of union wage premia, some examples would be comparisons between OLS, Fixed Effects, Propensity matching score and the first study using Regression discontinuity estimation [@dinardo2004]. @lewis1983, goes on to posit that the OLS estimation would be the one procedure to produce the least biased estimator of the union wage gap. 
+
+## Data
+```{r include=FALSE}
+library(haven)
+df <- read_dta("C:/Users/gariz/OneDrive/Desktop/Master's/Second Semester/Labour Economics/EssaySolution/Labour/data/ps4.dta")
+
+library(tidyverse)
+library(dplyr)
+library(Hmisc)
+library(IDPmisc)
+library(quantreg)
+library(ggplot2)
+library(stargazer)
+library(xtable)
+```
+
+*Data Sources.* The paper uses the individual level of aggregated microdata to estimate the union wage premium in the US. The sample data is derived from the Current Population Survey (CPS), which collects data on the yearly wages and union membership status since the year 1973. This paper will use the March CPS sample from 1991 because it was the last publication which still reported the years of education as later publications group up educational attainment into subcategories. The information in the weekly survey contains the individual worker's wages and membership status. The data coverage ranges from the years 1973 - 1990 for 72539 observations and controls for measures of human capital (years of schooling, years of experience, and experience squared); demographic variable (dummies: gender, race and marital status); and job attributes (dummies: one digit industry code, occupation of individual and union membership status). The main dependent variable will be log hourly wage which we impute using the wage income and hours worked. We use the Rstudio for estimation of the effects and the missing values are excluded from the data, however, this could lead to selection bias.
+
+
+## Techniques
+Firstly, we present some summary descriptive statistics of the data on union-nonunion individuals and their earnings. Secondly, we then estimate the union effects using linear estimation and quantile regressions. The premise of this approach is to remove the effects of the observable worker control variables, in an attempt to show the clear effect of being a union member on the wage differentials. However, it is imperative to acknowledge that the use of cross-sectional data will be detrimental to the results estimated.
+```{r clean data, include=FALSE}
+# Generate variables
+df$hrwage <- df$incwage/(df$wkswork1*df$uhrswork)
+df$lnwage <- log(df$hrwage)
+
+# Remove Na
+library(IDPmisc)
+df <- NaRV.omit(df)
+
+# Generate dummy
+
+df$unionst <- ifelse(df$union==2|df$union==3,1,0)
+df$unionst<-as.factor(df$unionst)
+
+
+df$sex <- ifelse(df$sex==1,1,0)
+df$sex<-as.factor(df$sex)
+
+# dummy for race
+df <- df %>%
+  mutate(race_White=as.numeric(race=="100"),
+         race_Black=as.numeric(race=="200"),
+         race_AIE=as.numeric(race=="300"),
+         race_Asian=as.numeric(race=="650"),
+         race_Other=as.numeric(race=="700")) 
+
+# dummy for sex 
+df <- df %>% 
+  mutate(male=as.factor(sex=="1"),
+         female=as.factor(sex=="0")) # %>% 
+  # select(-sex)
+
+#dummy for occupation
+df <- df %>%
+  mutate(wc_1=as.numeric(occ=="0"),
+         wc_2=as.numeric(occ=="1"),
+         wc_3=as.numeric(occ=="2"),
+         wc_4=as.numeric(occ=="3"),
+         wc_5=as.numeric(occ=="4"),
+         wc_6=as.numeric(occ=="5"),
+         wc_7=as.numeric(occ=="6"),
+         wc_8=as.numeric(occ=="7"),
+         wc_9=as.numeric(occ=="8"),
+         wc_10=as.numeric(occ=="9")) #%>% 
+  #select(-occ)
+
+#dummy for industry 
+df <- df %>%
+  mutate(ind_1=as.numeric(ind=="1"),
+         ind_2=as.numeric(ind=="2"),
+         ind_3=as.numeric(ind=="3"),
+         ind_4=as.numeric(ind=="4"),
+         ind_5=as.numeric(ind=="5"),
+         ind_6=as.numeric(ind=="6"),
+         ind_7=as.numeric(ind=="7"),
+         ind_8=as.numeric(ind=="8"),
+         ind_9=as.numeric(ind=="9")) #%>% 
+  #select(-ind)
+
+df <- df %>% 
+  mutate(exp = age - school - 6)
+
+df <- df %>% 
+  mutate(exp2 = exp^2)
+
+```
+
+## Shortcomings
+The two methodological shortcomings of using OLS for estimating the union-nonunion wage differentials are selection bias and endogeneity bias. Endogeneity bias would mean that the OLS estimates will be biased if the rate of unionization was not an exogenous variable [@checchi2002]. The two shortcomings have become the leading reasons for the consensus as to why OLS would result in biased estimators of the union wage differential. This chapter will further highlight more methodological shortcomings:  
+1. Selection bias could be when the workers with union membership may have unobserved and observed heterogeneous characteristics that are different from the nonunion members in wage differential determination. This could lead to the "worker choice model hypothesis," where more productive workers would prefer a non-unionized industry and the less productive worker would prefer a unionized industry. [farber1980].  
+2. The selection bias problem could be rectified by using panel data as it can account for the fixed unobserved individual characteristics. Longitudinal data allows for the observation of worker wage variation as their union status shifts [@hirsch1986 ; @blanchflower1996]. However, because we use cross-sectional data in this paper, we are not able to solve the methodological problem.  
+3. These selection bias downfalls could also be expunged by using simultaneous estimation procedures. Instrumental variables may be able to estimate the union wage differential by suggesting an indirect wage effect. The use of a two-stage @heckman1979 estimation technique has also been documented in the literature.  However, the biggest drawback of instrumental variables is the challenge of finding an ideal instrument. The results from such procedures are also not robust and very different due to sensitivity to the methodology applied, measures of error terms and inputting too many control variables.
+
+
+# Empirical Evidence
+
+## Descriptive Statistics
+```{r Distribution of income of the job, echo=FALSE}
+
+g1 <- ggplot(df) + geom_boxplot(aes(x=unionst, y=lnwage))
+g1
+```
+
+\newpage
+
+## **Effect of Union Status**
+
+ *Unconditional Union wage gap*
+```{r Linear Regression, include=FALSE}
+# Linear reg (Unconditional wage gap)
+fit1 <- lm(lnwage ~ unionst, data = df)
+```
+The goal of this chapter is to use ordinary least squares to estimate the effects of union status on the wages that workers will earn. This is then followed by estimation of the same equation but including choice covariates to be controls to capture observed effects. The above results will show the mean differences between the log wage earnings of workers who belong to a union relative to workers in the sample that do not belong to a union. The results show that the unconditional union wage differential between union and non-union workers in the CPS 1991 sample be approximately 33.67 percent. 
+
+
+
+ *Union wage gap | Human capital controls*
+```{r FE, include=FALSE}
+fit2 <- lm(lnwage ~ unionst + school + exp + exp2 + female + race_Black + race_AIE +race_Asian + race_Other, data = df)
+```
+We then move over to estimate regression results of the effects of union status on worker's wage but now we include the following control variables: years of schooling, gender dummy(Female), years of potential experience and experience squared and finally dummy variables for the race groups. Table 1 (panel 2) shows that the inclusion of human capital controls to the mincer wage equation will decrease the union wage premium by 13 percent to a new level of approximately 21 percent. The results give insight that some of the wage differentials between union members and non-union members can be explained by the individual's attributes, however, it is important to note that given the previous empirical study in the US the wage differential is still quite high, hence there may be more factors explaining this gap.
+
+
+ *Union wage | Job controls (occupational and industry fixed effects)*
+```{r Control variable, include=FALSE}
+fit3 <- lm(lnwage ~ unionst + school + exp + exp2 +female + race_Black + race_AIE +race_Asian + race_Other + wc_2 +wc_3 +wc_4 +wc_5 +wc_6 +wc_7 +wc_8 +wc_9+ wc_10 +ind_2 +ind_3 +ind_4 +ind_5 +ind_6 + ind_7 + ind_8 + ind_9, data = df)
+```
+Table 1 (panel 3) uses ordinary least squares estimation to determine the source of the high union wage premium but it then includes job attributed covariates to determine the sensitivity of the wage estimates to an individual's industry or occupation. The notion in this estimation is that the union wage premium may be the result of the previously mentioned selection bias problems. The industry an individual might be employed in may be naturally heavily unionized, therefore, regardless of union status, the wages of workers in that industry are likely to be inherently higher than other non-unionized sectors. The inclusion of these two jobs attributed fixed effects as controls to the estimation will allow for inference on whether workers who belong to unions are likely to be working in higher-paying sectors. The results in the table show that this will not be the case in this sample, the union wage differential declines slightly proving that the occupation and industry do not explain the large premium. As shown in Appendix B \ref{APPB} we estimate more equations including either the industry level dummy or occupational dummy at a time, instead of simultaneous. The results show that when wage effects of the union status are conditional on human control variables and only industry dummies, will give a lower estimate of approximately **17 percent**. This result is the closest to the estimates shown in previous studies and will be the ideal union wage differential in this paper.
+```{r include=FALSE}
+library(stargazer)
+stargazer(fit1, fit2, fit3,
+          type = "html",
+          out = "Union_wage_files/Linear.html",
+          title = "Union-Nonunion Wage Gap: Multiple Linear Regression",
+          align=TRUE,
+          dep.var.labels = c("Log Wages"),
+          no.space = T,
+          column.labels = c("Unconditional Wage gap","Conditional on Human Capital Control", "Conditional on Job Controls"))
+```
+
+```{r, out.height="550px", out.width="400px", include=TRUE, fig.align="center", fig.cap=c("Table 1"), echo=FALSE}
+knitr::include_graphics("C:/Users/gariz/OneDrive/Desktop/Master's/Second Semester/Labour Economics/EssaySolution/TrySolution/Union_wage/Union_wage_files/linear.pdf")
+```
+
+
+
+
+## **Causal effect between Union status and Returns to years of education**
+In the previous section, we were able to estimate the union wage differential for the sample in the US over the period 1973-1990. Now we move our focus to dissect the causal relationships between the workers being part of a union and their returns to years of school. This is then followed by a discussion on the union wage gap and wage inequality in the United States using the same CPS data. This chapter aims to address the following:
+ *Hypothesis: Will an increase in unionization cause a decline in Income inequality?*
+
+ *Mincer wage equation* 
+```{r include=FALSE}
+fit4 <- lm(lnwage ~ school + exp + exp2 + female + race_Black + race_AIE +race_Asian + race_Other, data = df)
+```
+ Table 2 has the log wage as the dependent variable and the number of school years as one of the independent variables, this regression will show the estimator for the returns to years of school/education. The rate of returns to schooling estimate is approximately 10 percent. However, due to the worker choice model selection bias hypothesis, it could be the case that this estimate could be overstated. A reasonable guess could be a positive link between highly educated worker and their probability of joining a union for the benefits enjoyed in a union, including collective barging for higher wages. This worker choice model hypothesis could also apply in the context of individuals with lower years of schooling, increasing their probability of joining a union to attempt to get higher wages. Therefore, it could be the case that the high union wage differential is explained by being a union member rather than the years of schooling an individual might have. 
+ 
+ *Mincer wage equation | Union status*
+```{r include=FALSE}
+fit5 <- lm(lnwage ~ school + exp + exp2 + female + race_Black + race_AIE +race_Asian + race_Other + unionst, data = df)
+```
+ *Table 2*. Panel B will then estimate a regression with the union status dummy variable as a control to try to capture the variation in wage effects. However, our results show that the coefficient of years of schooling barely changed from the previous estimate, meaning that returns to years of schooling will not be affected by the probability of union status of workers with more years of schooling.
+ 
+
+
+ *Returns to years of school for workers who are union members*
+$$
+\log(wage) = \alpha + \beta_1years of schooling + \beta_2experience + \beta_3experience^2 + \beta_4unionstatus + \beta_5unionstatus * years of schooling + \beta_6 X + \epsilon
+$$
+Where X will be the vector including the dummy variables for race and sex control.
+$$
+H_o : \beta_5 = 0 \\
+H_1 : \beta_5 \neq 0 
+$$
+```{r include=FALSE}
+fit6 <- lm(lnwage ~ school + exp + exp2 + unionst + unionst*school + female + race_Black + race_AIE +race_Asian + race_Other , data = df)
+
+```
+ *Table 2*. Panel 3 reports on the possible effects that union status could have on the returns to years of schooling. From literature, it was sighted that unions affected by tightening the wage dispersion on all scales. The transmission mechanism included a push and pull role that unions would play on the income of the worker, they could either increase wages for those earning lower-earning or decrease the position in the wage distribution of high earning workers. This compression of the union wage gap was deemed as the threat effect in previous literature [@farber2001]. Therefore, following the @card1996, hypothesis in the US, unions are expected to compress wage dispersion, therefore the returns to years of schooling estimate differential dependent on union status should be in favour of non-union members. The regression equation estimated for this analysis will involve the interaction term between union status and years of schooling to capture this differential effect. As can be seen from the results, the interaction term of union status and years of schooling will be negative, therefore in agreement with the expectations of compressing the wage dispersion. These results clearly show that unions will reduce wage inequality by reducing the wage differential between union and non-union members.
+ 
+```{r include=FALSE, results="asis"}
+
+stargazer(fit4, fit5, fit6,
+          type = "html",
+          out = "Union_wage_files/Edu.html",
+          title = "Returns to education and Union Status: Multiple Linear Regression",
+          align=TRUE,
+          dep.var.labels = c("Log Wages"),
+          no.space = T,
+          column.labels = c("Returns to Edu","Control for Union Status", "Interaction Term"))
+```
+
+```{r, out.height="500px", out.width="400px", include=TRUE, fig.align="center", fig.cap=c("Table 2"), echo=FALSE}
+knitr::include_graphics("C:/Users/gariz/OneDrive/Desktop/Master's/Second Semester/Labour Economics/EssaySolution/TrySolution/Union_wage/Union_wage_files/edu.pdf")
+```
+ 
+\newpage
+ 
+## Quantile Regression
+```{r include=FALSE}
+library(quantreg)
+
+# Define variables
+Y <- cbind(df$lnwage)
+X <- cbind(df$unionst, df$school, df$exp, df$exp2, df$female, df$race_Black, df$race_AIE ,df$race_Asian , df$race_Other , df$wc_2 ,df$wc_3 ,df$wc_4 ,df$wc_5 ,df$wc_6 ,df$wc_7 ,df$wc_8 ,df$wc_9 , df$wc_10 ,df$ind_2 ,df$ind_3 ,df$ind_4 ,df$ind_5 ,df$ind_6 , df$ind_7 , df$ind_8 , df$ind_9)
+D <- as.data.frame(X)
+Z <- cbind(df$unionst, df$school, df$exp, df$exp2, df$female, df$race_Black, df$race_AIE ,df$race_Asian , df$race_Other, df$ind_2 ,df$ind_3 ,df$ind_4 ,df$ind_5 ,df$ind_6 , df$ind_7 , df$ind_8 , df$ind_9)
+
+```
+
+
+```{r include=FALSE}
+fit7 <- lm(Y~ Z, data = df)
+```
+
+```{r include=FALSE}
+quantreg5 <- rq(Y ~ Z, data = df, tau = 0.05)
+#summary(quantreg5)
+```
+```{r include=FALSE}
+quantreg50 <- rq(Y ~ Z, data = df, tau = 0.50)
+#summary(quantreg50)
+```
+```{r include=FALSE}
+quantreg95 <- rq(Y ~ Z, data = df, tau = 0.95)
+#summary(quantreg95)
+```
+Quantile regression allows the research another perspective to the estimations of union status on the union wage differential, according to a given fraction in the distribution of wages. The paper will consider only three quantiles, namely; low wage(5%), median wage (50%) and high wage (95%).
+
+```{r include=FALSE, results="asis"}
+
+stargazer(fit7, quantreg5, quantreg50, quantreg95,
+          type = "html",
+          out = "Union_wage_files/Quant.html",
+          title = "Union-Nonunion Wage Gap: Quantile Regression",
+          align=TRUE,
+          dep.var.labels = c("Log Wages"),
+          no.space = T,
+          column.labels = c("OLS","Quantile 5", "Quantile 50", "Quantile 95"))
+
+```
+
+```{r, out.height="400px", out.width="400px", include=TRUE, fig.align="center", fig.cap=c("Table 3"), echo=FALSE}
+knitr::include_graphics("C:/Users/gariz/OneDrive/Desktop/Master's/Second Semester/Labour Economics/EssaySolution/TrySolution/Union_wage/Union_wage_files/Quant.pdf")
+```
+
+ 
+Table 3 (panels 2,3,4) will show that some of the individual character attributes explaining the differential between wages between the three quantiles are not the same. The main job attribute needed for analysis will be the union status effects on the wage gap between the workers across the quantiles. Results in the 5th quantile show the union wage gap being 42 percent which is high. In the 50th, the union wage gap drops to 13 percent and finally, in the 95th percentile, the gap drops to approximately 4 percent. Table 3 estimates show that all the estimates in this regression equation will be statistically significant at the 0.01 percent level. Table 5 will also support this significance by showing that all the coefficient estimates will be different from each other.
+
+ *Table 4.2 :Testing for differences between coefficients on each income quantile*  
+ *Null hypothesis is that all coefficients are not different
+```{r echo=FALSE}
+fit8 <- anova(quantreg5,quantreg50,quantreg95)
+fit8
+#Null hypothesis is that all coefficients are not different
+```
+
+
+### Quantile Plots ( distribution of coefficients on each income quantile)
+```{r echo=FALSE}
+quantreg.all <- rq(Y ~ Z, tau = seq(0.05, 0.95, by = 0.05), data = df)
+quantreg.plot <- summary(quantreg.all)
+plot(quantreg.plot)
+```  
+
+The important quantile panel from this graph would be Z1 (representing union status), which will show the regression coefficients of union status on each of the quantiles of wage dispersion. This is meant to accentuate the results already outlaid in the previous estimations (OLS and Quantile), showing the importance of union status in explaining the union wage differential. The graph shows that unions will certainly compress the wage distribution, thereby reducing wage inequalities- this result is similar to some of the literature about unions in the US. The higher we go on the wage quantile scale, the union wag gap will decline.
+
+
+```{r include=FALSE}
+fit15 <- lm(lnwage ~ unionst + school + exp + exp2 + female + race_Black + race_AIE +race_Asian + race_Other +ind_2 +ind_3 +ind_4 +ind_5 +ind_6 + ind_7 + ind_8 + ind_9, data = df)
+
+fit15
+```
+
+
+
+
+## Regression Diagonistics
+The models fit in the paper were estimated assuming there was no multicollinearity, however, in this section, we will check the union wage gap estimation with industry control only that was suggested as the ideal rate for the paper for multicollinearity. The F-value for all explanatory values is high and suggest statistically significant, however, the p-value for the race dummy other is statistically insignificant. Therefore, we then plot the model diagnostics to check for normality among other assumption violations.
+```{r echo=FALSE}
+par(mfrow = c(2,2))
+plot(fit15)
+```
+
+The graph shows output for four different diagnostic plots:  
+*Firstly* residuals vs fitted values checks for linearity and homoscedasticity. Our estimation can flag out data points with larger residuals, however, the residuals appear to be quite linear, hence evidence of homoscedasticity.  
+*Secondly* the QQ plot is meant to evaluate the normality assumption. Before zero the observations lie below the 45-degree line but go above the line after zero. So we can assume normality after theoretical quantiles.  
+*Thirdly* Scale-Location checks for the homoscedasticity assumption. There is a horizontal line with a randomly scattered data point, hence we do not violate homoscedasticity. Although the program flagged some observations.  
+*Finally* Residuals vs Leverage aids to find influential cases which are often a huge concern. Observations in the sample do cross the Cook's distance line, which is not an ideal condition. This suggests there are influential data points in the sample.
+
+
+# Conclusion 
+Calculation of the union wage differential is a difficult task and it is a complex issue in general. Many studies have been carried out with different estimation approaches ranging from OLS, propensity matching, instrumental variables, logistic regressions and the most recent, regression discontinuity. Due to the imperfection of government data such as the CPS used in this paper, as they tend to overstate the union wage differential. To be able to account for the plethora of factors that may explain this wage differential effect of union membership, this paper sought to estimate equations controlling for observable individual characteristics and job attributes.  
+In this paper, we were able to estimate the union wage differential using CPS data in the US from the 1970s through the 1990s. Our estimates of the union percentage increase are consistent with most literature in this period for the country. The findings in this paper support the many studies that the declines in unionization across sectors have been a major contributor to the secular increment in both wage dispersion and consequently inequality.
+
+As for further research, the estimation of such wage effects ought to be based on a more country-based theoretical model, particularly the effects of union membership, coverage and density. Second, most of the literature focuses on the US or Uk but it is pertinent for more developing countries to also draw attention to their union effects. Finally, for policymakers the knowledge about the magnitude of the union wage effect may not be adequate, hence, they ought to draw insights on the social and economic consequences of the unions compressing wage distributions.
+
+
+
+<!-- Make title of bibliography here: -->
+<!-- \newpage -->
+
+\newpage
+
+# References {-}
+
+<div id="refs"></div>
+
+\newpage
+
+# Appendix {-}
+
+## Appendix A {-}
+
+- Experience variable was created using the following calculation : Exp = age - years of schooling - 6.
+- Log wage dependent variable was created using the following calculation: total labour income from previous years / (number of weeks worked in the previous year * number of usual hours worked per week the previous year).
+
+
+
+
+## Appendix B {-} \label{APPB}
+
+ *Conditional Union Wage Gap | human capital control + Industry* 
+```{r include=FALSE}
+fit9 <- lm(lnwage ~ unionst + school + exp + exp2 + female + race_Black + race_AIE +race_Asian + race_Other +ind_2 +ind_3 +ind_4 +ind_5 +ind_6 + ind_7 + ind_8 + ind_9, data = df)
+
+```
+
+ *Conditional Union Wage Effect | human capital control + Occupation*
+```{r Control, include=FALSE}
+fit10 <- lm(lnwage ~ unionst + school + exp + exp2 + female + race_Black + race_AIE +race_Asian + race_Other + wc_2 +wc_3 +wc_4 +wc_5 +wc_6 +wc_7 +wc_8 +wc_9+ wc_10, data = df)
+```
+
+```{r include=FALSE, results="asis"}
+
+stargazer(fit9, fit10,
+          type = "html",
+          out = "Union_wage_files/Appendix.html",
+          title = "Union-Nonunion Wage Gap: Industry vs Occupation",
+          align=TRUE,
+          dep.var.labels = c("Log Wages"),
+          no.space = T,
+          column.labels = c("Industry","Occupation"))
+```
+
+```{r, out.height="500px", out.width="400px", include=TRUE, fig.align="center", fig.cap=c("Table 5"), echo=FALSE}
+knitr::include_graphics("C:/Users/gariz/OneDrive/Desktop/Master's/Second Semester/Labour Economics/EssaySolution/TrySolution/Union_wage/Union_wage_files/Appendix.pdf")
+```
+ 
